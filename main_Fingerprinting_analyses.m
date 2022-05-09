@@ -7,6 +7,7 @@
 %
 %
 % Alessandra Griffa
+% alessandra.griffa@gmail.com
 % University of Geneva
 % May 2022
 %
@@ -19,9 +20,10 @@ clc
 % -> CHANGE MATLAB PATH TO BrainComm_mammalian_evolution LOCAL REPOSITORY
 %
 % -> SET DATA DIRECTORY
-%    Data to reproduce the results of Griffa et al. (202x) can be
-%    downloadad at ZENODO REPOSITORY
-data_dir = '/Users/alli/Desktop/PROJECT_IT/DATASET_BrainComm_mammalian_evolution/DATA';
+%    Data to reproduce the main analyses reported in Griffa et al. (202x) 
+%    will be made availble on a Zenodo repository. 
+%    Here, we provided a smaller example dataset to run this code. 
+data_dir = fullfile(pwd,'DATASET_BrainComm_mammalian_evolution_example');
 
 
 

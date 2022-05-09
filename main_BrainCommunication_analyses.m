@@ -7,6 +7,7 @@
 %
 %
 % Alessandra Griffa
+% alessandra.griffa@gmail.com
 % University of Geneva
 % May 2022
 %
@@ -20,9 +21,10 @@ clc
 % -> CHANGE MATLAB PATH TO BrainComm_mammalian_evolution LOCAL REPOSITORY
 %
 % -> SET DATA DIRECTORY
-%    Data to reproduce the results of Griffa et al. (202x) can be
-%    downloadad at ZENODO REPOSITORY
-data_dir = '/Users/alli/Desktop/PROJECT_IT/DATASET_BrainComm_mammalian_evolution';
+%    Data to reproduce the main analyses reported in Griffa et al. (202x) 
+%    will be made availble on a Zenodo repository. 
+%    Here, we provided a smaller example dataset to run this code. 
+data_dir = fullfile(pwd,'DATASET_BrainComm_mammalian_evolution_example');
 
 
 
@@ -46,7 +48,7 @@ spec = {'h','q','m'};
         
 % Number of subecjts for each dataset
 % hHCP: up to 100; qTVB: 9; mAD3: 10
-pii{1} = 1:100;     % h HCP 
+pii{1} = 1:10;      % h HCP 
 pii{2} = 1:9;       % q TVB
 pii{3} = 1:10;      % m AD3
 
@@ -76,7 +78,7 @@ load(fullfile(data_dir, 'parcellations', 'minfo78_with_rsn.mat'),'minfo');
 
 
 
-%% LOAD data 
+%% LOAD data; load (or generate) null model 
 %
 % nn = number of nodes (brain regions)
 % ns = number of subejcts
@@ -158,11 +160,12 @@ for s = 1:length(spec_string)
         eval([spec{s},'MI = a.MI(:,:,pii{s});']);
     end
     
-    % LOAD RANDOMIZED FUNCTIONAL DATA
+    % LOAD OR GENERATE RANDOMIZED FUNCTIONAL DATA
     filename = dir(fullfile(this_data_dir,'MIrand_*.mat'));
     if length(filename) ~= 1
-        warning(['Missing data for ', spec_string{s}, ' - MI FILE']);
-        continue
+        nrand = 100;
+        temp = fnc_addYeoLines(MI, nrand, this_data_dir);
+        eval([spec{s},'MIrand = temp(:,:,:,pii{s});']);
     else
         a = load(fullfile(this_data_dir,filename.name));
         eval([spec{s},'MIrand = a.MIrand(:,:,:,pii{s});']);
@@ -226,7 +229,7 @@ end
 
 
 
-%% Compute (or load) PARALLEL COMMUNICATION INFORMATION
+%% COMPUTE (or load) PARALLEL COMMUNICATION INFORMATION
 %
 % nn = number of nodes (brain regions)
 % ns = number of subejcts
